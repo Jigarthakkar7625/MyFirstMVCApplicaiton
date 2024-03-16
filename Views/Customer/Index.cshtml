@@ -1,0 +1,90 @@
+﻿@model MyFirstMVCApplicaiton.Models.CustomerModel
+
+@{
+    ViewBag.Title = "Index";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@{
+
+    //C# syntex
+
+    var a = Model.CustomerID;
+    var b = Model.CustomerName;
+
+    //if (true)
+    //{
+
+    //}
+
+    //for (int i = 0; i < length; i++)
+    //{
+
+    //}
+
+
+    //foreach (var item in collection)
+    //{
+
+    //}
+
+    var abc = "Hello Brother";
+
+}
+
+<h2>Index</h2>
+
+
+@using (Html.BeginForm())
+{
+    <div>
+
+        @{
+
+            <div>@abc</div>
+
+            <br />
+            <br />
+            <br />
+
+        }
+
+    </div>
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>CustomerModel</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CustomerID, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CustomerID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CustomerName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
