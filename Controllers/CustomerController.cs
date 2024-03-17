@@ -16,6 +16,15 @@ namespace MyFirstMVCApplicaiton.Controllers
             customerModel.CustomerID = 10;
             customerModel.CustomerName = 125;
 
+
+            if (TempData.ContainsKey("Hello"))
+            {
+                var abc = TempData["Hello"].ToString();
+                TempData.Keep();
+            }
+
+           
+
             return View(customerModel);
         }
 

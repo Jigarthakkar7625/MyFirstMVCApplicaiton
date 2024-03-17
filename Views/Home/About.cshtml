@@ -5,3 +5,58 @@
 <h3>@ViewBag.Message</h3>
 
 <p>Use this area to provide additional information.</p>
+
+
+
+@*@foreach (var item in ViewData["Customers"] as List<MyFirstMVCApplicaiton.Models.CustomerModel>)
+{
+
+    <div>
+        @item.CustomerID
+        <br />
+        @item.CustomerName
+    </div>
+
+
+
+}*@
+
+@TempData["Hello"]
+
+
+@foreach (var item in ViewBag.users)
+{
+
+    <div>
+        @item.UserId
+        <br />
+        @item.UserName
+    </div>
+
+
+
+}
+
+
+
+
+
+@ViewData["Amount"]
+
+<br />
+
+@ViewBag.Amount
+<br />
+
+@ViewBag.IsActive
+
+<br />
+
+@ViewBag.UserList
+<br />
+
+@ViewBag.Dhruvi
+
+<br />
+
+@ViewBag.Message
