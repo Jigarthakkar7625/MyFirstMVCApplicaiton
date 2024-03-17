@@ -29,14 +29,14 @@ namespace MyFirstMVCApplicaiton.Controllers
 
             MyDBJMAAEntities1 myDBJMAAEntities = new MyDBJMAAEntities1();
 
-            var users = myDBJMAAEntities.Users.ToList();
+            var users = myDBJMAAEntities.Users.ToList(); //Retrive the data from DB
 
             Student user = new Student();
             user.CourseId = 1;
             user.StudentName= "Jigar";
 
             myDBJMAAEntities.Students.Add(user);
-            myDBJMAAEntities.SaveChanges();
+            myDBJMAAEntities.SaveChanges(); //Save
 
 
             List<CustomerModel> customers = new List<CustomerModel>
