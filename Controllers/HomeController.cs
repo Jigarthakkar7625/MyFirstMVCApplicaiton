@@ -16,8 +16,33 @@ namespace MyFirstMVCApplicaiton.Controllers
         public ActionResult Index()
         {
             TempData["Hello"] = "Helloo Siirrrrr";
+            MyDBJMAAEntities1 myDBJMAAEntities = new MyDBJMAAEntities1();
+            CustomerModel customerModel = new CustomerModel();
+            customerModel.CustomerNameString = "Jigar Thakkar";
+            customerModel.CheckBox = true;
 
-            return RedirectToAction("Index", "Customer");
+            ViewBag.users = myDBJMAAEntities.Users.ToList();
+            ViewData["users"] = myDBJMAAEntities.Users.ToList();
+
+            return View(customerModel);
+
+            //return RedirectToAction("Index", "Customer");
+        }
+        [HttpPost]
+        public ActionResult Index(CustomerModel customerModel1)
+        {
+            TempData["Hello"] = "Helloo Siirrrrr";
+            MyDBJMAAEntities1 myDBJMAAEntities = new MyDBJMAAEntities1();
+            CustomerModel customerModel = new CustomerModel();
+            customerModel.CustomerNameString = "Jigar Thakkar";
+            customerModel.CheckBox = true;
+
+            ViewBag.users = myDBJMAAEntities.Users.ToList();
+            ViewData["users"] = myDBJMAAEntities.Users.ToList();
+
+            return View(customerModel);
+
+            //return RedirectToAction("Index", "Customer");
         }
 
         // How to pass the data Contoller >> View (Viewbag, ViewData)
