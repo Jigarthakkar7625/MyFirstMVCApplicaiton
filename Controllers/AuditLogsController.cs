@@ -17,8 +17,18 @@ namespace MyFirstMVCApplicaiton.Controllers
         // GET: AuditLogs
         public ActionResult Index()
         {
-            //ModelState.AddModelError("Jigar", "user name is duplicate");
-
+            try
+            {
+                ViewBag.Error = "";
+                ViewBag.Success = "";
+                ModelState.AddModelError("Jigar", "user name is duplicate");
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("Jigar", "user name is duplicate");
+                throw;
+            }
+            
 
             return View(db.AuditLogs.ToList());
         }

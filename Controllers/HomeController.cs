@@ -13,7 +13,8 @@ namespace MyFirstMVCApplicaiton.Controllers
 
     public class HomeController : Controller
     {
-        public ActionResult Index()
+
+        public ActionResult Index() 
         {
             TempData["Hello"] = "Helloo Siirrrrr";
             MyDBJMAAEntities1 myDBJMAAEntities = new MyDBJMAAEntities1();
@@ -24,10 +25,39 @@ namespace MyFirstMVCApplicaiton.Controllers
             ViewBag.users = myDBJMAAEntities.Users.ToList();
             ViewData["users"] = myDBJMAAEntities.Users.ToList();
 
-            return View(customerModel);
 
-            //return RedirectToAction("Index", "Customer");
+           return View(customerModel);
+
+            //return RedirectToAction("Index", "Customer"); // Another page ma redirect 
+            //return Redirect("About"); // same Controller
         }
+
+
+
+        // View(customerModel); >> ViewResult
+        // ContentResult() >> 
+        // File
+        // Redirect and RedirectToAction
+        // JSON (JsonResult)
+        //Partial VIew
+
+
+        public FileResult Download(int userID)
+        {
+            var path = Url.Content("~/Files/" + userID + "/Demo.txt");
+
+            return File(path, "text/plain", "TempFile.txt");
+
+        }
+
+
+        public ContentResult ContentResultMethod()
+        {
+            return Content("Hello Brother");
+        }
+
+
+
         [HttpPost]
         public ActionResult Index(CustomerModel customerModel1)
         {
@@ -49,7 +79,6 @@ namespace MyFirstMVCApplicaiton.Controllers
         [HttpPost]
         public JsonResult GetData(UserModel1 userModel1)
         {
-
 
             MyDBJMAAEntities1 myDBJMAAEntities = new MyDBJMAAEntities1();
 
@@ -130,4 +159,5 @@ namespace MyFirstMVCApplicaiton.Controllers
             return View();
         }
     }
+
 }

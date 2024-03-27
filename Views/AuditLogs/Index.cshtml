@@ -11,6 +11,13 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 
+
+@if (ViewBag.Error != null) { 
+    <p>
+        @ViewBag.Error
+    </p>
+}
+
 @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
 
