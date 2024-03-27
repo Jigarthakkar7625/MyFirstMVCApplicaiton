@@ -9,17 +9,17 @@
 
 
 @*@foreach (var item in ViewData["Customers"] as List<MyFirstMVCApplicaiton.Models.CustomerModel>)
-{
+    {
 
-    <div>
-        @item.CustomerID
-        <br />
-        @item.CustomerName
-    </div>
+        <div>
+            @item.CustomerID
+            <br />
+            @item.CustomerName
+        </div>
 
 
 
-}*@
+    }*@
 
 @TempData["Hello"]
 
@@ -39,6 +39,7 @@
 
 
 
+@Html.Partial("View")
 
 
 @ViewData["Amount"]

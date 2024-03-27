@@ -6,8 +6,27 @@
 }
 
 
+@Scripts.Render("~/bundles/jquery")
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+@*@Html.Partial("View", Model)*@
+
+@{ 
+
+    Html.RenderAction("ReturnPartialView", "Home");
+}
+
+
+
+
 @*View >> Controller
     Controller >> View*@
+
+
 
 
 @*2 way binding*@
@@ -15,36 +34,191 @@
 @using (Html.BeginForm())
 {
 
+    <br />
+    <br />
+    <br />
+    <br />
+    @Html.AntiForgeryToken()
 
-@Html.TextBoxFor(x => x.CustomerNameString, new { @class = "form-control", @id = "CustomerNameString_ID" })
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
-<br />
-<br />
+    <br />
 
-@Html.CheckBoxFor(x => x.CheckBox)
+    @Html.LabelFor(x => x.CustomerNameString)
 
-<br />
-<br />
-
-@Html.RadioButtonFor(x => x.RadioButton, "Male")
-@Html.RadioButtonFor(x => x.RadioButton, "Female")
-
-<br />
-<br />
-
-@Html.PasswordFor(x => x.Password)
-
-
-<br />
-<br />
-
-@*@Html.DropDownListFor(x => x.CustomerID, new SelectList(ViewBag.users, "UserId", "UserName"))*@
-
-
-@Html.DropDownListFor(x => x.CustomerID, new SelectList((System.Collections.IEnumerable)ViewData["users"], "UserId", "UserName"))
+    @Html.TextBoxFor(x => x.CustomerNameString, new { @class = "form-control", @id = "CustomerNameString_ID" })
+    @Html.ValidationMessageFor(x => x.CustomerNameString, "", new { @class = "text-dangor" })
 
 
     <br />
-    <input type="submit" value="Save"/>
+
+    @Html.LabelFor(x => x.Email)
+
+    @Html.TextBoxFor(x => x.Email, new { @class = "form-control", @id = "CustomerNameString_ID" })
+    @Html.ValidationMessageFor(x => x.Email, "", new { @class = "text-dangor" })
+
+
+    <br />
+
+    @Html.LabelFor(x => x.Age)
+
+    @Html.TextBoxFor(x => x.Age, new { @class = "form-control", @id = "CustomerNameString_ID" })
+    @Html.ValidationMessageFor(x => x.Age, "", new { @class = "text-dangor" })
+
+
+    <br />
+
+    @Html.CheckBoxFor(x => x.CheckBox)
+
+    <br />
+    <br />
+
+    @Html.RadioButtonFor(x => x.RadioButton, "Male")
+    @Html.RadioButtonFor(x => x.RadioButton, "Female")
+
+    <br />
+    <br />
+
+    @Html.PasswordFor(x => x.Password)
+
+
+    <br />
+    <br />
+
+    @*@Html.DropDownListFor(x => x.CustomerID, new SelectList(ViewBag.users, "UserId", "UserName"))*@
+
+
+    @Html.DropDownListFor(x => x.CustomerID, new SelectList((System.Collections.IEnumerable)ViewData["users"], "UserId", "UserName"))
+
+
+    <br />
+
+    <select id="ddlNationality" name="ddlNationality">
+    </select>
+
+    <br />
+
+    <input type="submit" value="Save" id="idSave" />
+
+    <br />
+    @*<input type="button" value="Save AJAX" id="idSave123" />*@
 
 }
+
+<script type="text/javascript">
+
+
+    //# >> get data from ID
+    //. >> get data from class
+
+    /*$("#idSave") >> Get element*/
+
+    $(document).ready(function () {
+
+        alert($("#CustomerNameString_ID").val())
+    })
+
+    $("#idSave123").click(function () {
+        debugger
+
+
+
+        // Object
+        var jsonData =
+        {
+            "FirstName": "Jigar",
+            "LastName": "Thakkar",
+        }
+
+
+        // Array
+        var jsonData122 =
+            [
+                {
+                    "FirstName": "Jigar",
+                    "LastName": "Thakkar",
+                },
+                {
+                    "FirstName": "Tushar",
+                    "LastName": "Patel",
+                },
+                {
+                    "FirstName": "Binal",
+                    "LastName": "Joshi",
+                },
+                {
+                    "FirstName": "Parth",
+                    "LastName": "Shah",
+                }
+
+            ]
+
+
+
+        var getJson = JSON.stringify(jsonData); // Convert json to string
+
+        var sreingJson = '[{"FirstName":"Jigar","LastName":"Thakkar"},{"FirstName":"Tushar","LastName":"Patel"},{"FirstName":"Binal","LastName":"Joshi"},{"FirstName":"Parth","LastName":"Shah"}]';
+
+        var checkJson = JSON.parse(getJson);
+
+        $("#CustomerNameString_ID").toggle();
+
+        $.ajax({
+                @* url: "@Url.Action("JSONMethodCalled", "Employees")",*@
+            url: "/Home/GetData",
+            type: "POST",      // The HTTP method to use for the request
+            contentType: "application/json; charset=utf-8",
+
+            dataType: "json",   // The type of data that you're exerciseecting back
+            data: JSON.stringify(jsonData),
+
+           error: function () {
+                            debugger
+                            // A function to be called if the request fails.
+                        },
+        beforeSend: function () {
+            debugger
+            // A function to be called if before the request is made.
+        },
+        success: function (response) {
+            debugger
+
+
+            $.each(response, function (data, value) {
+
+                $("#ddlNationality").append($("<option></option>").val(value.AuditLogId).html(value.Text));
+            })
+            // A function to be called if the request succeeds.
+        },
+        complete: function (response) {
+            debugger
+            // A function to be called when the request finishes
+        }
+    });
+
+    })
+
+    $("#idSave").mouseenter(function () {
+        debugger
+
+        $("#CustomerNameString_ID").toggleClass("clsActive");
+
+    })
+
+    $("#idSave").mouseleave(function () {
+        debugger
+
+        $("#CustomerNameString_ID").css("background", "red");
+
+    })
+
+
+
+
+
+
+</script>
+
+
+
+

@@ -20,7 +20,7 @@ namespace MyFirstMVCApplicaiton.Controllers
             CustomerModel customerModel = new CustomerModel();
             customerModel.CustomerNameString = "Jigar Thakkar";
             customerModel.CheckBox = true;
-
+            //LING
             ViewBag.users = myDBJMAAEntities.Users.ToList();
             ViewData["users"] = myDBJMAAEntities.Users.ToList();
 
@@ -45,6 +45,30 @@ namespace MyFirstMVCApplicaiton.Controllers
             //return RedirectToAction("Index", "Customer");
         }
 
+
+        [HttpPost]
+        public JsonResult GetData(UserModel1 userModel1)
+        {
+
+
+            MyDBJMAAEntities1 myDBJMAAEntities = new MyDBJMAAEntities1();
+
+            var auditLogsList = myDBJMAAEntities.AuditLogs.ToList();
+
+            return Json(auditLogsList, JsonRequestBehavior.AllowGet);
+
+        }
+
+
+        public PartialViewResult ReturnPartialView()
+        {
+
+            CustomerModel customerModel = new CustomerModel();
+            customerModel.CustomerNameString = "Hello partial View";
+
+            return PartialView("View", customerModel);
+        }
+
         // How to pass the data Contoller >> View (Viewbag, ViewData)
         // How to pass the data Contoller >> Controller (TempData)
 
@@ -58,7 +82,7 @@ namespace MyFirstMVCApplicaiton.Controllers
 
             Student user = new Student();
             user.CourseId = 1;
-            user.StudentName= "Jigar";
+            user.StudentName = "Jigar";
 
             myDBJMAAEntities.Students.Add(user);
             myDBJMAAEntities.SaveChanges(); //Save
@@ -72,7 +96,7 @@ namespace MyFirstMVCApplicaiton.Controllers
 
             TempData["Hello"] = "Helloo Siirrrrr";
 
-            
+
             ViewBag.users = users;
 
             ViewBag.Amount = 10.55;
