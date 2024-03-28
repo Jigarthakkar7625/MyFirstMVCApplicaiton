@@ -15,13 +15,16 @@
 
 @*@Html.Partial("View", Model)*@
 
-@{ 
+@{
 
     Html.RenderAction("ReturnPartialView", "Home");
 }
 
 
 <a href="/Home/Download">Download</a>
+
+
+<a href="/Customer/Index?id=@ViewBag.CustomerID&firstName=jigar&lastName=thakkar">Goto Page</a>
 
 
 @*View >> Controller
@@ -34,6 +37,9 @@
 
 @using (Html.BeginForm())
 {
+
+
+    @Html.HiddenFor(x => x.CustomerID)
 
     <br />
     <br />

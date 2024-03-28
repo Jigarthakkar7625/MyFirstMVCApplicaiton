@@ -12,6 +12,23 @@ namespace MyFirstMVCApplicaiton.Controllers
         // GET: Customer
         public ActionResult Index()
         {
+
+
+            var userid = Session["UserId"].ToString();
+            // Client side >> 
+
+            //Hidden FIeld
+            //Cookie
+            //QueryString
+            //VIewdata, ViewBag and tempData
+
+            //URL?id=10&firstName=jigar&lastName=thakkar
+            // VIewdata, ViewBag and tempData
+
+            var id = Request.QueryString["Id"].ToString();
+            var firstName = Request.QueryString["firstName"].ToString();
+            var lastName = Request.QueryString["lastName"].ToString();
+
             CustomerModel customerModel = new CustomerModel();
             customerModel.CustomerID = 10;
             customerModel.CustomerName = 125;

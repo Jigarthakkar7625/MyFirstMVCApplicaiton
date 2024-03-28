@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -14,13 +15,43 @@ namespace MyFirstMVCApplicaiton.Controllers
     public class HomeController : Controller
     {
 
+        // State management : 
+
+        // Data store : Client side and server side (Session)
+
+
+        // MVC filters : 
+
+        // 1. Authentication filter >> Check my user registerd in my applicaion or not
+        // 2. Authorization filter >>  User1 >> Rights >> Roles
+        //3 Action filter >> 
+        //4. Result filter
+        //5 Exception filter
+
+
+
+
         public ActionResult Index() 
         {
+          
+
+            // After login > store
+            Session["EmailId"] = "jkigar@gmail.com";
+
+
+            HttpCookie cookie = new HttpCookie("MyCookie");
+            cookie.Value = "10";
+            cookie.Expires = DateTime.Now.AddDays(10);
+            this.ControllerContext.HttpContext.Response.Cookies.Add(cookie);
+
+
             TempData["Hello"] = "Helloo Siirrrrr";
             MyDBJMAAEntities1 myDBJMAAEntities = new MyDBJMAAEntities1();
             CustomerModel customerModel = new CustomerModel();
             customerModel.CustomerNameString = "Jigar Thakkar";
             customerModel.CheckBox = true;
+            customerModel.CustomerID = 10;
+            ViewBag.CustomerID = 10;
             //LING
             ViewBag.users = myDBJMAAEntities.Users.ToList();
             ViewData["users"] = myDBJMAAEntities.Users.ToList();
@@ -61,6 +92,13 @@ namespace MyFirstMVCApplicaiton.Controllers
         [HttpPost]
         public ActionResult Index(CustomerModel customerModel1)
         {
+
+            if (this.ControllerContext.HttpContext.Request.Cookies.AllKeys.Contains("MyCookie"))
+            {
+                HttpCookie cookie = this.ControllerContext.HttpContext.Request.Cookies["MyCookie"];
+
+
+            }
             TempData["Hello"] = "Helloo Siirrrrr";
             MyDBJMAAEntities1 myDBJMAAEntities = new MyDBJMAAEntities1();
             CustomerModel customerModel = new CustomerModel();
@@ -70,9 +108,9 @@ namespace MyFirstMVCApplicaiton.Controllers
             ViewBag.users = myDBJMAAEntities.Users.ToList();
             ViewData["users"] = myDBJMAAEntities.Users.ToList();
 
-            return View(customerModel);
+            //return View(customerModel);
 
-            //return RedirectToAction("Index", "Customer");
+            return RedirectToAction("Index", "Customer");
         }
 
 
