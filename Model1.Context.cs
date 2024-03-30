@@ -28,6 +28,7 @@ namespace MyFirstMVCApplicaiton
         }
     
         public virtual DbSet<AUDITTABLE> AUDITTABLEs { get; set; }
+
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<DepartmentID> DepartmentIDs { get; set; }
         public virtual DbSet<EmpJimmy> EmpJimmies { get; set; }

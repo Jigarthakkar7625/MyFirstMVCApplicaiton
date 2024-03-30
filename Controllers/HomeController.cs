@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Mvc;
 
@@ -20,6 +21,9 @@ namespace MyFirstMVCApplicaiton.Controllers
         // Data store : Client side and server side (Session)
 
 
+        // EF > ORM >>
+        // Approaches >> 1. Database first 2. Code First 3. Model
+
         // MVC filters : 
 
         // 1. Authentication filter >> Check my user registerd in my applicaion or not
@@ -31,9 +35,75 @@ namespace MyFirstMVCApplicaiton.Controllers
 
 
 
-        public ActionResult Index() 
+        public ActionResult Index()
         {
-          
+
+
+            MyDBJMAAEntities1 myDBJMAAEntities = new MyDBJMAAEntities1();
+
+            //var a = myDBJMAAEntities.AUDITTABLEs.Where(x => x.LOGID == 1).ToList();
+
+            //// ADD
+
+            //List<AUDITTABLE> aUDITTABLEsList = new List<AUDITTABLE>();
+
+            //AUDITTABLE aUDITTABLEs = new AUDITTABLE();
+            //aUDITTABLEs.TEXTData = "JigaR1212121";
+            //aUDITTABLEs.ChangeDate = DateTime.Now;
+            //aUDITTABLEs.USERNAME = "dbo";
+            //aUDITTABLEsList.Add(aUDITTABLEs);
+
+            //AUDITTABLE aUDITTABLEsddd = new AUDITTABLE();
+            //aUDITTABLEsddd.TEXTData = "JigaR1212121fdsfdsfsd";
+            //aUDITTABLEsddd.ChangeDate = DateTime.Now;
+            //aUDITTABLEsddd.USERNAME = "dbo";
+            //aUDITTABLEsList.Add(aUDITTABLEsddd);
+
+            ////myDBJMAAEntities.AUDITTABLEs.Add(aUDITTABLEs); // Insert single record
+            //myDBJMAAEntities.AUDITTABLEs.AddRange(aUDITTABLEsList); // Multiple record insert hoga
+
+            //myDBJMAAEntities.SaveChanges();
+
+
+            // ADD
+
+            //var getAUDITTABLEData = myDBJMAAEntities.AUDITTABLEs.Where(x => x.LOGID == 1).FirstOrDefault();
+            //getAUDITTABLEData.TEXTData = "JigaRssssss";
+            //getAUDITTABLEData.ChangeDate = DateTime.Now;
+
+            var getAUDITTABLEData123 = myDBJMAAEntities.AUDITTABLEs.Where(x => x.LOGID == 2005).FirstOrDefault();
+
+            var getAUDITTABLEData1234 = myDBJMAAEntities.AUDITTABLEs.Where(x => x.LOGID == 2004).FirstOrDefault();
+
+            List<AUDITTABLE> aUDITTABLEsList123 = new List<AUDITTABLE>();
+
+            aUDITTABLEsList123.Add(getAUDITTABLEData123);
+            aUDITTABLEsList123.Add(getAUDITTABLEData1234);
+
+            myDBJMAAEntities.AUDITTABLEs.RemoveRange(aUDITTABLEsList123);
+
+
+            myDBJMAAEntities.SaveChanges();
+
+            //myDBJMAAEntities.AUDITTABLEs.Add();
+
+            // Select * from AUDITTABLEs where LOGID = 10;
+
+
+
+            // LINQ > Lng integrity Query
+
+            // LINQ >> LiNQ TO ENTITY >>>>>>>>>>
+            // LINQ >> LiNQ TO Object
+
+
+            List<int> ints = new List<int>(); // LiNQ TO Object
+            ints.Add(2);
+            ints.Add(3);
+
+            var accccc = ints.ToList();
+
+
 
             // After login > store
             Session["EmailId"] = "jkigar@gmail.com";
@@ -46,7 +116,11 @@ namespace MyFirstMVCApplicaiton.Controllers
 
 
             TempData["Hello"] = "Helloo Siirrrrr";
-            MyDBJMAAEntities1 myDBJMAAEntities = new MyDBJMAAEntities1();
+
+
+
+           
+
             CustomerModel customerModel = new CustomerModel();
             customerModel.CustomerNameString = "Jigar Thakkar";
             customerModel.CheckBox = true;
@@ -57,7 +131,7 @@ namespace MyFirstMVCApplicaiton.Controllers
             ViewData["users"] = myDBJMAAEntities.Users.ToList();
 
 
-           return View(customerModel);
+            return View(customerModel);
 
             //return RedirectToAction("Index", "Customer"); // Another page ma redirect 
             //return Redirect("About"); // same Controller
