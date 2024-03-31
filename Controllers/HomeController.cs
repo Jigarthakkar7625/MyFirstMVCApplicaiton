@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace MyFirstMVCApplicaiton.Controllers
@@ -37,9 +38,146 @@ namespace MyFirstMVCApplicaiton.Controllers
 
         public ActionResult Index()
         {
-
-
+            
             MyDBJMAAEntities1 myDBJMAAEntities = new MyDBJMAAEntities1();
+
+            // LINQ  : 
+
+            // how to write LINQ 
+            //1. Query Syntax
+            //2. Methon Syntax
+
+            // Select * from tablename as a
+            //var getData = (from a in myDBJMAAEntities.AUDITTABLEs
+            //               select a).ToList();
+
+
+            //var getDataMethod = myDBJMAAEntities.AUDITTABLEs.ToList();
+
+
+            // Select *
+            //var getDataMethod1 = myDBJMAAEntities.AUDITTABLEs.Select(x => new CustomerModel()
+            //{
+            //    CustomerID = x.LOGID,
+            //    CustomerNameString = x.TEXTData,
+            //}).ToList();
+
+            //var getDataQuery = (from a in myDBJMAAEntities.AUDITTABLEs
+            //                    select new
+            //                    {
+            //                        a.LOGID,
+            //                        a.TEXTData
+            //                    }).ToList();
+
+
+
+            int b = 3;
+
+
+
+            string[] dataSource1 = { "India", "USA", "UK", "Canada", "Srilanka" };
+            string[] dataSource2 = { "India", "uk", "Canada", "France", "Japan" };
+            //Method Syntax
+            // union
+            // union All
+            var MS = dataSource1.Union(dataSource2, StringComparer.OrdinalIgnoreCase).ToList();
+            var MS1223 = dataSource1.Concat(dataSource2).ToList();
+            // Result
+            //USA
+            //"UK"
+            //Srilanka
+
+            var MS1 = dataSource2.Intersect(dataSource1).ToList();
+
+            // uk
+            //France
+            //Japan
+
+
+            var total = myDBJMAAEntities.Courses.ToList();
+
+            var getDataMethod123 = myDBJMAAEntities.Courses.Where(x => x.CourseId == 1).ToList();
+
+            var getDataMethod1234 = myDBJMAAEntities.Courses.AsEnumerable().Except(getDataMethod123).ToList();
+
+
+
+
+
+
+            return View();
+
+
+
+            // Projection Operators
+            // Select or SelectMany (Homework)
+
+            //Filtering operator
+            // Where
+
+            // Partitioning operator
+            // Take
+            // Skip
+            // TakeWhile
+            // SKipWhile
+
+            // Ordering operators
+            // Orderby
+            // OrderbyDesc
+            // ThenBy
+            // ThenbyDesc
+            // Reverse
+
+            // Grouping operators
+            // GroupBy
+
+            //Join operators
+            // JOin
+
+            // Set operators
+            //distinct
+            // union
+            // Intersect
+            // Except
+
+            // Conversation Operator
+            // ToList()
+            // ToArray()
+            // AsEnumrable()
+
+            //Element Operators:
+            // First
+            // FirstOrDefault()
+            // Last
+            // LastOrDefault
+            // Single
+            // SingleOrDefault
+            // ElementAt
+            // ElementAtOrDefault
+
+            // Quantifier Operators:
+            // Any
+            // All
+            // Contains
+
+            // Aggreegate Operators
+            // Sum
+            // Min
+            // Max.........
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             //var a = myDBJMAAEntities.AUDITTABLEs.Where(x => x.LOGID == 1).ToList();
 
@@ -71,19 +209,19 @@ namespace MyFirstMVCApplicaiton.Controllers
             //getAUDITTABLEData.TEXTData = "JigaRssssss";
             //getAUDITTABLEData.ChangeDate = DateTime.Now;
 
-            var getAUDITTABLEData123 = myDBJMAAEntities.AUDITTABLEs.Where(x => x.LOGID == 2005).FirstOrDefault();
+            //var getAUDITTABLEData123 = myDBJMAAEntities.AUDITTABLEs.Where(x => x.LOGID == 2005).FirstOrDefault();
 
-            var getAUDITTABLEData1234 = myDBJMAAEntities.AUDITTABLEs.Where(x => x.LOGID == 2004).FirstOrDefault();
+            //var getAUDITTABLEData1234 = myDBJMAAEntities.AUDITTABLEs.Where(x => x.LOGID == 2004).FirstOrDefault();
 
-            List<AUDITTABLE> aUDITTABLEsList123 = new List<AUDITTABLE>();
+            //List<AUDITTABLE> aUDITTABLEsList123 = new List<AUDITTABLE>();
 
-            aUDITTABLEsList123.Add(getAUDITTABLEData123);
-            aUDITTABLEsList123.Add(getAUDITTABLEData1234);
+            //aUDITTABLEsList123.Add(getAUDITTABLEData123);
+            //aUDITTABLEsList123.Add(getAUDITTABLEData1234);
 
-            myDBJMAAEntities.AUDITTABLEs.RemoveRange(aUDITTABLEsList123);
+            //myDBJMAAEntities.AUDITTABLEs.RemoveRange(aUDITTABLEsList123);
 
 
-            myDBJMAAEntities.SaveChanges();
+            //myDBJMAAEntities.SaveChanges();
 
             //myDBJMAAEntities.AUDITTABLEs.Add();
 
@@ -97,41 +235,41 @@ namespace MyFirstMVCApplicaiton.Controllers
             // LINQ >> LiNQ TO Object
 
 
-            List<int> ints = new List<int>(); // LiNQ TO Object
-            ints.Add(2);
-            ints.Add(3);
+            //List<int> ints = new List<int>(); // LiNQ TO Object
+            //ints.Add(2);
+            //ints.Add(3);
 
-            var accccc = ints.ToList();
-
-
-
-            // After login > store
-            Session["EmailId"] = "jkigar@gmail.com";
-
-
-            HttpCookie cookie = new HttpCookie("MyCookie");
-            cookie.Value = "10";
-            cookie.Expires = DateTime.Now.AddDays(10);
-            this.ControllerContext.HttpContext.Response.Cookies.Add(cookie);
-
-
-            TempData["Hello"] = "Helloo Siirrrrr";
+            //var accccc = ints.ToList();
 
 
 
-           
-
-            CustomerModel customerModel = new CustomerModel();
-            customerModel.CustomerNameString = "Jigar Thakkar";
-            customerModel.CheckBox = true;
-            customerModel.CustomerID = 10;
-            ViewBag.CustomerID = 10;
-            //LING
-            ViewBag.users = myDBJMAAEntities.Users.ToList();
-            ViewData["users"] = myDBJMAAEntities.Users.ToList();
+            //// After login > store
+            //Session["EmailId"] = "jkigar@gmail.com";
 
 
-            return View(customerModel);
+            //HttpCookie cookie = new HttpCookie("MyCookie");
+            //cookie.Value = "10";
+            //cookie.Expires = DateTime.Now.AddDays(10);
+            //this.ControllerContext.HttpContext.Response.Cookies.Add(cookie);
+
+
+            //TempData["Hello"] = "Helloo Siirrrrr";
+
+
+
+
+
+            //CustomerModel customerModel = new CustomerModel();
+            //customerModel.CustomerNameString = "Jigar Thakkar";
+            //customerModel.CheckBox = true;
+            //customerModel.CustomerID = 10;
+            //ViewBag.CustomerID = 10;
+            ////LING
+            //ViewBag.users = myDBJMAAEntities.Users.ToList();
+            //ViewData["users"] = myDBJMAAEntities.Users.ToList();
+
+
+
 
             //return RedirectToAction("Index", "Customer"); // Another page ma redirect 
             //return Redirect("About"); // same Controller
