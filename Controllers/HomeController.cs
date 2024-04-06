@@ -1,6 +1,8 @@
 ﻿using MyFirstMVCApplicaiton.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
@@ -38,8 +40,246 @@ namespace MyFirstMVCApplicaiton.Controllers
 
         public ActionResult Index()
         {
-            
+
             MyDBJMAAEntities1 myDBJMAAEntities = new MyDBJMAAEntities1();
+
+            //var abc = myDBJMAAEntities.AUDITTABLEs.SqlQuery("Select * from AUDITTABLEs where id = 12").ToList();
+
+
+            //var newIntsert = myDBJMAAEntities.Database.ExecuteSqlCommand("insert into Student(StudentName,CourseId) values('hello brother',1)");
+
+            var callSP = myDBJMAAEntities.MyFilterViews.ToList();
+
+            foreach (var item in callSP)
+            {
+
+            }
+
+            var abccc =  "Jigar";
+
+            var newIntsert1 = myDBJMAAEntities.Database.ExecuteSqlCommand("insert into Student(StudentName,CourseId) values('hello brother12',1); insert into Student(StudentName,CourseId) values('hello brother12223',1)");
+
+
+
+            using (var context = new MyDBJMAAEntities1())
+            {
+                using (DbContextTransaction dbTrans = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+
+                        AUDITTABLE aUDITTABLEs = new AUDITTABLE();
+                        aUDITTABLEs.TEXTData = "Transaction";
+                        aUDITTABLEs.ChangeDate = DateTime.Now;
+                        aUDITTABLEs.USERNAME = "dbo";
+                        context.AUDITTABLEs.Add(aUDITTABLEs);
+                        context.SaveChanges();
+
+
+                        var a = 1;
+                        Student user = new Student();
+                        user.CourseId = a/0;
+                        user.StudentName = "Jigar";
+
+                        myDBJMAAEntities.Students.Add(user);
+                        myDBJMAAEntities.SaveChanges(); //Save
+
+                        dbTrans.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        dbTrans.Rollback();
+                        throw;
+                    }
+
+                }
+            }
+
+            // Transaction in EF  (VM)
+
+          
+
+
+            // Partition operator
+            //Take
+            //var getEmployees = myDBJMAAEntities.Employees.Take(5).ToList();
+
+            //var getEmployees12 = myDBJMAAEntities.Employees.AsEnumerable().OrderByDescending(x=>x.EmployeeID).TakeWhile(x=>x.EmployeeID > 5).ToList();
+
+
+            // JOINs : 
+
+            var getJoins = (from u in myDBJMAAEntities.Users
+                            join ua in myDBJMAAEntities.User_Address
+                            on u.UserId equals ua.UserId into myUserAddressList
+                            from ua in myUserAddressList.DefaultIfEmpty()
+                            select new
+                            {
+                                userId = u.UserId,
+                                address = ua.Address == null ? "No Data" : ua.Address
+                            }).ToList();
+
+
+            // getJoins (insert)
+
+            // update (insert)
+
+            // select (insert)
+
+
+            foreach (var item in getJoins)
+            {
+                Console.WriteLine(item);
+            }
+
+
+            int pageSize = 5;
+            int PageNumber = 0;
+
+            int skipRecords = pageSize * PageNumber;
+
+
+            var getEmployees12 = myDBJMAAEntities.Users.AsEnumerable().OrderByDescending(x => x.UserId).Where(x => x.UserName == "Oliver").Skip(skipRecords).Take(pageSize).ToList();
+
+
+            pageSize = 5;
+            PageNumber = 1;
+
+            skipRecords = pageSize * PageNumber;
+
+
+            var getEmployees123 = myDBJMAAEntities.Users.AsEnumerable().OrderByDescending(x => x.UserId).Skip(skipRecords).Take(pageSize).ToList();
+
+            pageSize = 5;
+            PageNumber = 2;
+
+            skipRecords = pageSize * PageNumber;
+
+
+            var getEmployees12333 = myDBJMAAEntities.Users.AsEnumerable().OrderByDescending(x => x.UserId).Skip(skipRecords).Take(pageSize).ToList();
+
+
+
+            List<int> ints = new List<int>() { 10, 1, 2, 5, 6, 7, 8, 9, 10, 11 }; // Left to right checking true condition
+
+            var skipDemo = ints.Skip(4).ToList();
+            var skipDemo13 = ints.SkipWhile(x => x < 6).ToList();
+
+
+
+            var getEmployees12s = ints.Where(x => x < 9).ToList();
+            var abc = getEmployees12s.TakeWhile(x => x < 6).ToList();
+
+            var getEmployees12s12 = ints.Where(x => x < 6).ToList();
+
+
+            List<Employee> employees = new List<Employee>();
+
+
+
+            var firstOrDefaultdsad1 = myDBJMAAEntities.Employees.Single(x => x.EmployeeID == 1); // First record
+
+            var firstOrDefault1212 = myDBJMAAEntities.Employees.SingleOrDefault(); // First record
+
+            var firstOrDefault1 = employees.FirstOrDefault(); // First record
+
+
+            try
+            {
+                var firstOrDefault = employees.First();  // 
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            //First record
+
+            var firstOrDefault3 = myDBJMAAEntities.Employees.Last();
+            var firstOrDefault4 = myDBJMAAEntities.Employees.LastOrDefault();
+
+
+
+            var grpby = myDBJMAAEntities.Employees.GroupBy(x => x.Department)
+                .Select(x => new
+                {
+                    key = x.Key,
+                    total = x.Sum(y => y.Salary),
+                    max = x.Max(y => y.Salary),
+                }).ToList();
+
+            foreach (var item in grpby)
+            {
+
+            }
+
+
+
+            int[] dataSource23 = { 1, 5, 8, 9, 10, 15, 50 };
+
+            // All aand ANy
+
+            var checkAll = dataSource23.All(x => x > 10); // If all vaues are above 10 thern it will return true otherwise false
+            var checkAny = dataSource23.Any(x => x > 10);
+
+            var allCheck = myDBJMAAEntities.Courses.Any(x => x.IsActive == true);
+
+            var List = myDBJMAAEntities.Courses.ToList();
+
+            var List12 = myDBJMAAEntities.Courses.FirstOrDefault();
+
+
+            // Contain
+            var checkContain = List.Contains(List12);
+
+
+
+
+
+
+
+            //int count1 = myDBJMAAEntities.Courses.Count();
+
+            //var list = myDBJMAAEntities.Courses.Where(x => x.CourseName == "JAVA").Sum(x => x.EmployeeID);
+
+            //int? sum = list.Sum(emp => {
+            //    if (emp.CourseName == "JAVA")
+            //        return emp.EmployeeID;
+            //    else
+            //        return 0;
+            //});
+
+
+            int count = dataSource23.Count();
+            int min = dataSource23.Min();
+            int max = dataSource23.Max();
+            double avg = dataSource23.Average();
+            //int count = dataSource23.Count();
+
+
+
+
+            string[] dataSource1 = { "India", "USA", "UK", "Canada", "Srilanka" };
+            string[] dataSource2 = { "India", "uk", "Canada", "France", "Japan" };
+
+
+
+
+            var getList = dataSource1.OrderBy(x => x).ToList(); // LINQ to Object
+            var getList12 = dataSource1.Reverse().ToList(); // LINQ to Object
+
+            var getDataMethod1 = myDBJMAAEntities.AUDITTABLEs.OrderByDescending(x => x.ChangeDate).ToList();
+            var getDataMethod2 = myDBJMAAEntities.AUDITTABLEs.OrderByDescending(x => x.ChangeDate).ThenByDescending(x => x.LOGID).ThenByDescending(x => x.TEXTData).ToList();
+
+
+
+
+            // Max, Min, Count, Avg, Sum
+
+
+
+
+
 
             // LINQ  : 
 
@@ -75,15 +315,17 @@ namespace MyFirstMVCApplicaiton.Controllers
 
 
 
-            string[] dataSource1 = { "India", "USA", "UK", "Canada", "Srilanka" };
-            string[] dataSource2 = { "India", "uk", "Canada", "France", "Japan" };
+
+
+
+
 
 
             //Method Syntax
             // union
             // union All
             var MS = dataSource1.Union(dataSource2, StringComparer.OrdinalIgnoreCase).ToList();
-            var MS1223 = dataSource1.Concat(dataSource2).ToList();
+            var MS1223 = dataSource1.Concat(dataSource2).ToList(); // Union ALL
             // Result
             //USA
             //"UK"
