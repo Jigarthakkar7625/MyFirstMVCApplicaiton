@@ -27,8 +27,8 @@ namespace MyFirstMVCApplicaiton
         public Nullable<int> Age { get; set; }
 
 
-        public virtual Employee Employee { get; set; }
+        public virtual Employee Employee { get; set; } // One to one relationship
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Student> Students { get; set; }
+        public virtual ICollection<Student> Students { get; set; } // One to Many relationship
     }
 }

@@ -1,4 +1,5 @@
-﻿using MyFirstMVCApplicaiton.Models;
+﻿using MyFirstMVCApplicaiton.AuthData;
+using MyFirstMVCApplicaiton.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,15 +10,33 @@ using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
+using System.Web.Security;
+using Authorization = MyFirstMVCApplicaiton.AuthData.Authorization;
 
 namespace MyFirstMVCApplicaiton.Controllers
 {
 
+    // Authentication Filters >> I m just checking  >> I have registerd or not in website??
+
+    // Authorization Filter >> Role and Rights (Admin ,  User, HR.......)
+
+    // Action Filter >> Before and after of this method(Index())
+
+    // Result Filter >> AFter completion of (Index())
+    // Exception filter (Globally Error) 
+
     // Home >> Controller name
     // Idex > Action name
-
+    //[Auth]
+    //[Authorize]
+    //[Authorization("Admin,HR")]  /// :Logic1
     public class HomeController : Controller
     {
+
+        // Action Filter
+        // outputCache
+        // Authorize
+        // HandleError
 
         // State management : 
 
@@ -34,322 +53,424 @@ namespace MyFirstMVCApplicaiton.Controllers
         //3 Action filter >> 
         //4. Result filter
         //5 Exception filter
+        [OutputCache(Duration = 5)]
+        public string GetTime()
+        {
+            return DateTime.Now.ToString("T");
+        }
+
+        [HandleError] /// :Logic2
+        public ActionResult CheckError()
+        {
+            throw new NotImplementedException();
+
+        }
+
+        //[ResultFilter]
+        [ExceptionFilter]
+        public ActionResult Login()
+        {
+
+            int a = 0;
+            var result = 10 / a;
 
 
+            // Admin >> Get data 
+            Session["Roles"] = "Admin";
+            return View();
+        }
 
 
+        //[ActionAttr]
+        //public ActionResult Login()
+        //{
+        //    Session["Roles"] = "Admin";
+        //    return View();
+        //}
+
+        // Define >> This is method should used only for Admin !!!!!!!!!
+        [Authorization("Admin")]
         public ActionResult Index()
         {
 
+
+
+            // Database first
+            // Code first
+            // Model first
+
+            // User  >> Area
+            // Admin >> Area
+            // HR >> Area
+
             MyDBJMAAEntities1 myDBJMAAEntities = new MyDBJMAAEntities1();
+
+            //var getCourse = myDBJMAAEntities.Courses.Find(1); // What is this query ??????
+
+
+            //var checkThisQuery = myDBJMAAEntities.ChangeTracker.Entries();
+
+            //foreach (var item in checkThisQuery)
+            //{
+
+            //    var tableName = item.Entity.GetType().FullName;
+            //    var state = item.State;
+
+            //}
+
+
+            // Insert 
+            //Student user11 = new Student();
+            //user11.CourseId = 1;
+            //user11.StudentName = "Jigar Tushat, Binal, Parth..";
+            //myDBJMAAEntities.Students.Add(user11);
+
+
+            //var getCourse = myDBJMAAEntities.Courses.Find(1);
+            //myDBJMAAEntities.Courses.Remove(getCourse);
+
+
+
+            //var checkThisQuery12 = myDBJMAAEntities.ChangeTracker.Entries();
+            //foreach (var item in checkThisQuery12)
+            //{
+
+            //    var tableName = item.Entity.GetType().FullName;
+            //    var state = item.State;
+
+            //}
+            //myDBJMAAEntities.SaveChanges();
+
+
+
+            // 1
+            // Address1
+            // Adress 2
+
+            // 2
+            // Address3
+            // Adress 4
+            // Eager loading 
+            // var StudentsList = myDBJMAAEntities.Courses.Include(x => x.Students).Include(x => x.Employee).ToList();
+
+
+            // Lazy loading 
+            //var courseList = myDBJMAAEntities.Courses.ToList();
+
+            //var abcccddd = courseList.Where(x => x.CourseId == 1).FirstOrDefault(); //NO DB CONNECTION
+
+            //var studentList = abcccddd.Students.ToList();
+
+
+            //var StudentsList = myDBJMAAEntities.Students.Include(x => x.Course).Include(x => x.Course).ToList();
 
             //var abc = myDBJMAAEntities.AUDITTABLEs.SqlQuery("Select * from AUDITTABLEs where id = 12").ToList();
 
 
             //var newIntsert = myDBJMAAEntities.Database.ExecuteSqlCommand("insert into Student(StudentName,CourseId) values('hello brother',1)");
 
-            var callSP = myDBJMAAEntities.MyFilterViews.ToList();
+            //var callSP = myDBJMAAEntities.MyFilterViews.ToList();
 
-            foreach (var item in callSP)
-            {
-
-            }
-
-            var abccc =  "Jigar";
-
-            var newIntsert1 = myDBJMAAEntities.Database.ExecuteSqlCommand("insert into Student(StudentName,CourseId) values('hello brother12',1); insert into Student(StudentName,CourseId) values('hello brother12223',1)");
-
-
-
-            using (var context = new MyDBJMAAEntities1())
-            {
-                using (DbContextTransaction dbTrans = context.Database.BeginTransaction())
-                {
-                    try
-                    {
-
-                        AUDITTABLE aUDITTABLEs = new AUDITTABLE();
-                        aUDITTABLEs.TEXTData = "Transaction";
-                        aUDITTABLEs.ChangeDate = DateTime.Now;
-                        aUDITTABLEs.USERNAME = "dbo";
-                        context.AUDITTABLEs.Add(aUDITTABLEs);
-                        context.SaveChanges();
-
-
-                        var a = 1;
-                        Student user = new Student();
-                        user.CourseId = a/0;
-                        user.StudentName = "Jigar";
-
-                        myDBJMAAEntities.Students.Add(user);
-                        myDBJMAAEntities.SaveChanges(); //Save
-
-                        dbTrans.Commit();
-                    }
-                    catch (Exception)
-                    {
-                        dbTrans.Rollback();
-                        throw;
-                    }
-
-                }
-            }
-
-            // Transaction in EF  (VM)
-
-          
-
-
-            // Partition operator
-            //Take
-            //var getEmployees = myDBJMAAEntities.Employees.Take(5).ToList();
-
-            //var getEmployees12 = myDBJMAAEntities.Employees.AsEnumerable().OrderByDescending(x=>x.EmployeeID).TakeWhile(x=>x.EmployeeID > 5).ToList();
-
-
-            // JOINs : 
-
-            var getJoins = (from u in myDBJMAAEntities.Users
-                            join ua in myDBJMAAEntities.User_Address
-                            on u.UserId equals ua.UserId into myUserAddressList
-                            from ua in myUserAddressList.DefaultIfEmpty()
-                            select new
-                            {
-                                userId = u.UserId,
-                                address = ua.Address == null ? "No Data" : ua.Address
-                            }).ToList();
-
-
-            // getJoins (insert)
-
-            // update (insert)
-
-            // select (insert)
-
-
-            foreach (var item in getJoins)
-            {
-                Console.WriteLine(item);
-            }
-
-
-            int pageSize = 5;
-            int PageNumber = 0;
-
-            int skipRecords = pageSize * PageNumber;
-
-
-            var getEmployees12 = myDBJMAAEntities.Users.AsEnumerable().OrderByDescending(x => x.UserId).Where(x => x.UserName == "Oliver").Skip(skipRecords).Take(pageSize).ToList();
-
-
-            pageSize = 5;
-            PageNumber = 1;
-
-            skipRecords = pageSize * PageNumber;
-
-
-            var getEmployees123 = myDBJMAAEntities.Users.AsEnumerable().OrderByDescending(x => x.UserId).Skip(skipRecords).Take(pageSize).ToList();
-
-            pageSize = 5;
-            PageNumber = 2;
-
-            skipRecords = pageSize * PageNumber;
-
-
-            var getEmployees12333 = myDBJMAAEntities.Users.AsEnumerable().OrderByDescending(x => x.UserId).Skip(skipRecords).Take(pageSize).ToList();
-
-
-
-            List<int> ints = new List<int>() { 10, 1, 2, 5, 6, 7, 8, 9, 10, 11 }; // Left to right checking true condition
-
-            var skipDemo = ints.Skip(4).ToList();
-            var skipDemo13 = ints.SkipWhile(x => x < 6).ToList();
-
-
-
-            var getEmployees12s = ints.Where(x => x < 9).ToList();
-            var abc = getEmployees12s.TakeWhile(x => x < 6).ToList();
-
-            var getEmployees12s12 = ints.Where(x => x < 6).ToList();
-
-
-            List<Employee> employees = new List<Employee>();
-
-
-
-            var firstOrDefaultdsad1 = myDBJMAAEntities.Employees.Single(x => x.EmployeeID == 1); // First record
-
-            var firstOrDefault1212 = myDBJMAAEntities.Employees.SingleOrDefault(); // First record
-
-            var firstOrDefault1 = employees.FirstOrDefault(); // First record
-
-
-            try
-            {
-                var firstOrDefault = employees.First();  // 
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-
-            //First record
-
-            var firstOrDefault3 = myDBJMAAEntities.Employees.Last();
-            var firstOrDefault4 = myDBJMAAEntities.Employees.LastOrDefault();
-
-
-
-            var grpby = myDBJMAAEntities.Employees.GroupBy(x => x.Department)
-                .Select(x => new
-                {
-                    key = x.Key,
-                    total = x.Sum(y => y.Salary),
-                    max = x.Max(y => y.Salary),
-                }).ToList();
-
-            foreach (var item in grpby)
-            {
-
-            }
-
-
-
-            int[] dataSource23 = { 1, 5, 8, 9, 10, 15, 50 };
-
-            // All aand ANy
-
-            var checkAll = dataSource23.All(x => x > 10); // If all vaues are above 10 thern it will return true otherwise false
-            var checkAny = dataSource23.Any(x => x > 10);
-
-            var allCheck = myDBJMAAEntities.Courses.Any(x => x.IsActive == true);
-
-            var List = myDBJMAAEntities.Courses.ToList();
-
-            var List12 = myDBJMAAEntities.Courses.FirstOrDefault();
-
-
-            // Contain
-            var checkContain = List.Contains(List12);
-
-
-
-
-
-
-
-            //int count1 = myDBJMAAEntities.Courses.Count();
-
-            //var list = myDBJMAAEntities.Courses.Where(x => x.CourseName == "JAVA").Sum(x => x.EmployeeID);
-
-            //int? sum = list.Sum(emp => {
-            //    if (emp.CourseName == "JAVA")
-            //        return emp.EmployeeID;
-            //    else
-            //        return 0;
-            //});
-
-
-            int count = dataSource23.Count();
-            int min = dataSource23.Min();
-            int max = dataSource23.Max();
-            double avg = dataSource23.Average();
-            //int count = dataSource23.Count();
-
-
-
-
-            string[] dataSource1 = { "India", "USA", "UK", "Canada", "Srilanka" };
-            string[] dataSource2 = { "India", "uk", "Canada", "France", "Japan" };
-
-
-
-
-            var getList = dataSource1.OrderBy(x => x).ToList(); // LINQ to Object
-            var getList12 = dataSource1.Reverse().ToList(); // LINQ to Object
-
-            var getDataMethod1 = myDBJMAAEntities.AUDITTABLEs.OrderByDescending(x => x.ChangeDate).ToList();
-            var getDataMethod2 = myDBJMAAEntities.AUDITTABLEs.OrderByDescending(x => x.ChangeDate).ThenByDescending(x => x.LOGID).ThenByDescending(x => x.TEXTData).ToList();
-
-
-
-
-            // Max, Min, Count, Avg, Sum
-
-
-
-
-
-
-            // LINQ  : 
-
-            // how to write LINQ 
-            //1. Query Syntax
-            //2. Methon Syntax
-
-            // Select * from tablename as a
-            //var getData = (from a in myDBJMAAEntities.AUDITTABLEs
-            //               select a).ToList();
-
-
-            //var getDataMethod = myDBJMAAEntities.AUDITTABLEs.ToList();
-
-
-            // Select *
-            //var getDataMethod1 = myDBJMAAEntities.AUDITTABLEs.Select(x => new CustomerModel()
+            //foreach (var item in callSP)
             //{
-            //    CustomerID = x.LOGID,
-            //    CustomerNameString = x.TEXTData,
-            //}).ToList();
 
-            //var getDataQuery = (from a in myDBJMAAEntities.AUDITTABLEs
-            //                    select new
-            //                    {
-            //                        a.LOGID,
-            //                        a.TEXTData
-            //                    }).ToList();
+            //}
+
+            //var abccc = "Jigar";
+
+            //var newIntsert1 = myDBJMAAEntities.Database.ExecuteSqlCommand("insert into Student(StudentName,CourseId) values('hello brother12',1); insert into Student(StudentName,CourseId) values('hello brother12223',1)");
 
 
 
-            int b = 3;
+            //using (var context = new MyDBJMAAEntities1())
+            //{
+            //    using (DbContextTransaction dbTrans = context.Database.BeginTransaction())
+            //    {
+            //        try
+            //        {
+
+            //            AUDITTABLE aUDITTABLEs = new AUDITTABLE();
+            //            aUDITTABLEs.TEXTData = "Transaction";
+            //            aUDITTABLEs.ChangeDate = DateTime.Now;
+            //            aUDITTABLEs.USERNAME = "dbo";
+            //            context.AUDITTABLEs.Add(aUDITTABLEs);
+            //            context.SaveChanges();
 
 
+            //            var a = 1;
+            //            Student user = new Student();
+            //            user.CourseId = a / 0;
+            //            user.StudentName = "Jigar";
 
+            //            myDBJMAAEntities.Students.Add(user);
+            //            myDBJMAAEntities.SaveChanges(); //Save
 
+            //            dbTrans.Commit();
+            //        }
+            //        catch (Exception)
+            //        {
+            //            dbTrans.Rollback();
+            //            throw;
+            //        }
 
+            //    }
+            //}
 
-
-
-
-            //Method Syntax
-            // union
-            // union All
-            var MS = dataSource1.Union(dataSource2, StringComparer.OrdinalIgnoreCase).ToList();
-            var MS1223 = dataSource1.Concat(dataSource2).ToList(); // Union ALL
-            // Result
-            //USA
-            //"UK"
-            //Srilanka
-
-            var MS1 = dataSource2.Intersect(dataSource1).ToList();
-
-            // uk
-            //France
-            //Japan
-
-
-            var total = myDBJMAAEntities.Courses.ToList();
-
-            var getDataMethod123 = myDBJMAAEntities.Courses.Where(x => x.CourseId == 1).ToList();
-
-            var getDataMethod1234 = myDBJMAAEntities.Courses.AsEnumerable().Except(getDataMethod123).ToList();
-
+            //// Transaction in EF  (VM)
 
 
 
 
+            //// Partition operator
+            ////Take
+            ////var getEmployees = myDBJMAAEntities.Employees.Take(5).ToList();
 
-            return View();
+            ////var getEmployees12 = myDBJMAAEntities.Employees.AsEnumerable().OrderByDescending(x=>x.EmployeeID).TakeWhile(x=>x.EmployeeID > 5).ToList();
+
+
+            //// JOINs : 
+
+            //var getJoins = (from u in myDBJMAAEntities.Users
+            //                join ua in myDBJMAAEntities.User_Address
+            //                on u.UserId equals ua.UserId into myUserAddressList
+            //                from ua in myUserAddressList.DefaultIfEmpty()
+            //                select new
+            //                {
+            //                    userId = u.UserId,
+            //                    address = ua.Address == null ? "No Data" : ua.Address
+            //                }).ToList();
+
+
+            //// getJoins (insert)
+
+            //// update (insert)
+
+            //// select (insert)
+
+
+            //foreach (var item in getJoins)
+            //{
+            //    Console.WriteLine(item);
+            //}
+
+
+            //int pageSize = 5;
+            //int PageNumber = 0;
+
+            //int skipRecords = pageSize * PageNumber;
+
+
+            //var getEmployees12 = myDBJMAAEntities.Users.AsEnumerable().OrderByDescending(x => x.UserId).Where(x => x.UserName == "Oliver").Skip(skipRecords).Take(pageSize).ToList();
+
+
+            //pageSize = 5;
+            //PageNumber = 1;
+
+            //skipRecords = pageSize * PageNumber;
+
+
+            //var getEmployees123 = myDBJMAAEntities.Users.AsEnumerable().OrderByDescending(x => x.UserId).Skip(skipRecords).Take(pageSize).ToList();
+
+            //pageSize = 5;
+            //PageNumber = 2;
+
+            //skipRecords = pageSize * PageNumber;
+
+
+            //var getEmployees12333 = myDBJMAAEntities.Users.AsEnumerable().OrderByDescending(x => x.UserId).Skip(skipRecords).Take(pageSize).ToList();
+
+
+
+            //List<int> ints = new List<int>() { 10, 1, 2, 5, 6, 7, 8, 9, 10, 11 }; // Left to right checking true condition
+
+            //var skipDemo = ints.Skip(4).ToList();
+            //var skipDemo13 = ints.SkipWhile(x => x < 6).ToList();
+
+
+
+            //var getEmployees12s = ints.Where(x => x < 9).ToList();
+            //var abc = getEmployees12s.TakeWhile(x => x < 6).ToList();
+
+            //var getEmployees12s12 = ints.Where(x => x < 6).ToList();
+
+
+            //List<Employee> employees = new List<Employee>();
+
+
+
+            //var firstOrDefaultdsad1 = myDBJMAAEntities.Employees.Single(x => x.EmployeeID == 1); // First record
+
+            //var firstOrDefault1212 = myDBJMAAEntities.Employees.SingleOrDefault(); // First record
+
+            //var firstOrDefault1 = employees.FirstOrDefault(); // First record
+
+
+            //try
+            //{
+            //    var firstOrDefault = employees.First();  // 
+            //}
+            //catch (Exception)
+            //{
+            //    throw;
+            //}
+
+            ////First record
+
+            //var firstOrDefault3 = myDBJMAAEntities.Employees.Last();
+            //var firstOrDefault4 = myDBJMAAEntities.Employees.LastOrDefault();
+
+
+
+            //var grpby = myDBJMAAEntities.Employees.GroupBy(x => x.Department)
+            //    .Select(x => new
+            //    {
+            //        key = x.Key,
+            //        total = x.Sum(y => y.Salary),
+            //        max = x.Max(y => y.Salary),
+            //    }).ToList();
+
+            //foreach (var item in grpby)
+            //{
+
+            //}
+
+
+
+            //int[] dataSource23 = { 1, 5, 8, 9, 10, 15, 50 };
+
+            //// All aand ANy
+
+            //var checkAll = dataSource23.All(x => x > 10); // If all vaues are above 10 thern it will return true otherwise false
+            //var checkAny = dataSource23.Any(x => x > 10);
+
+            //var allCheck = myDBJMAAEntities.Courses.Any(x => x.IsActive == true);
+
+            //var List = myDBJMAAEntities.Courses.ToList();
+
+            //var List12 = myDBJMAAEntities.Courses.FirstOrDefault();
+
+
+            //// Contain
+            //var checkContain = List.Contains(List12);
+
+
+
+
+
+
+
+            ////int count1 = myDBJMAAEntities.Courses.Count();
+
+            ////var list = myDBJMAAEntities.Courses.Where(x => x.CourseName == "JAVA").Sum(x => x.EmployeeID);
+
+            ////int? sum = list.Sum(emp => {
+            ////    if (emp.CourseName == "JAVA")
+            ////        return emp.EmployeeID;
+            ////    else
+            ////        return 0;
+            ////});
+
+
+            //int count = dataSource23.Count();
+            //int min = dataSource23.Min();
+            //int max = dataSource23.Max();
+            //double avg = dataSource23.Average();
+            ////int count = dataSource23.Count();
+
+
+
+
+            //string[] dataSource1 = { "India", "USA", "UK", "Canada", "Srilanka" };
+            //string[] dataSource2 = { "India", "uk", "Canada", "France", "Japan" };
+
+
+
+
+            //var getList = dataSource1.OrderBy(x => x).ToList(); // LINQ to Object
+            //var getList12 = dataSource1.Reverse().ToList(); // LINQ to Object
+
+            //var getDataMethod1 = myDBJMAAEntities.AUDITTABLEs.OrderByDescending(x => x.ChangeDate).ToList();
+            //var getDataMethod2 = myDBJMAAEntities.AUDITTABLEs.OrderByDescending(x => x.ChangeDate).ThenByDescending(x => x.LOGID).ThenByDescending(x => x.TEXTData).ToList();
+
+
+
+
+            //// Max, Min, Count, Avg, Sum
+
+
+
+
+
+
+            //// LINQ  : 
+
+            //// how to write LINQ 
+            ////1. Query Syntax
+            ////2. Methon Syntax
+
+            //// Select * from tablename as a
+            ////var getData = (from a in myDBJMAAEntities.AUDITTABLEs
+            ////               select a).ToList();
+
+
+            ////var getDataMethod = myDBJMAAEntities.AUDITTABLEs.ToList();
+
+
+            //// Select *
+            ////var getDataMethod1 = myDBJMAAEntities.AUDITTABLEs.Select(x => new CustomerModel()
+            ////{
+            ////    CustomerID = x.LOGID,
+            ////    CustomerNameString = x.TEXTData,
+            ////}).ToList();
+
+            ////var getDataQuery = (from a in myDBJMAAEntities.AUDITTABLEs
+            ////                    select new
+            ////                    {
+            ////                        a.LOGID,
+            ////                        a.TEXTData
+            ////                    }).ToList();
+
+
+
+            //int b = 3;
+
+
+
+
+
+
+
+
+
+            ////Method Syntax
+            //// union
+            //// union All
+            //var MS = dataSource1.Union(dataSource2, StringComparer.OrdinalIgnoreCase).ToList();
+            //var MS1223 = dataSource1.Concat(dataSource2).ToList(); // Union ALL
+            //// Result
+            ////USA
+            ////"UK"
+            ////Srilanka
+
+            //var MS1 = dataSource2.Intersect(dataSource1).ToList();
+
+            //// uk
+            ////France
+            ////Japan
+
+
+            //var total = myDBJMAAEntities.Courses.ToList();
+
+            //var getDataMethod123 = myDBJMAAEntities.Courses.Where(x => x.CourseId == 1).ToList();
+
+            //var getDataMethod1234 = myDBJMAAEntities.Courses.AsEnumerable().Except(getDataMethod123).ToList();
+
+
+
+
+            CustomerModel customerModel = new CustomerModel();
+
+            return View(customerModel);
 
 
 
@@ -519,6 +640,57 @@ namespace MyFirstMVCApplicaiton.Controllers
             //return Redirect("About"); // same Controller
         }
 
+        [Authorization("User")]
+        public ActionResult About()
+        {
+
+
+            MyDBJMAAEntities1 myDBJMAAEntities = new MyDBJMAAEntities1();
+
+            var users = myDBJMAAEntities.Users.ToList(); //Retrive the data from DB
+
+            Student user = new Student();
+            user.CourseId = 1;
+            user.StudentName = "Jigar";
+
+            myDBJMAAEntities.Students.Add(user);
+            myDBJMAAEntities.SaveChanges(); //Save
+
+
+            List<CustomerModel> customers = new List<CustomerModel>
+            {
+                new CustomerModel(){CustomerID = 10,CustomerName=120 },
+                new CustomerModel(){CustomerID = 12,CustomerName=1222 },
+            };
+
+            TempData["Hello"] = "Helloo Siirrrrr";
+
+
+            ViewBag.users = users;
+
+            ViewBag.Amount = 10.55;
+            ViewBag.IsActive = true;
+
+            ViewBag.UserList = "Hello Jigar";
+            ViewBag.Dhruvi = "Hello Dhruvi";
+
+
+
+            ViewData["Customers"] = customers;
+
+            ViewData["Amount"] = 10.55;
+            ViewData["IsActive"] = true;
+
+            //Type castting
+
+            ViewBag.UserList = "Hello Jigar";
+            ViewBag.Dhruvi = "Hello Dhruvi";
+
+
+            ViewBag.Message = "Your application description page.";
+
+            return View(customers);
+        }
 
 
         // View(customerModel); >> ViewResult
@@ -595,56 +767,7 @@ namespace MyFirstMVCApplicaiton.Controllers
         // How to pass the data Contoller >> View (Viewbag, ViewData)
         // How to pass the data Contoller >> Controller (TempData)
 
-        public ActionResult About()
-        {
 
-
-            MyDBJMAAEntities1 myDBJMAAEntities = new MyDBJMAAEntities1();
-
-            var users = myDBJMAAEntities.Users.ToList(); //Retrive the data from DB
-
-            Student user = new Student();
-            user.CourseId = 1;
-            user.StudentName = "Jigar";
-
-            myDBJMAAEntities.Students.Add(user);
-            myDBJMAAEntities.SaveChanges(); //Save
-
-
-            List<CustomerModel> customers = new List<CustomerModel>
-            {
-                new CustomerModel(){CustomerID = 10,CustomerName=120 },
-                new CustomerModel(){CustomerID = 12,CustomerName=1222 },
-            };
-
-            TempData["Hello"] = "Helloo Siirrrrr";
-
-
-            ViewBag.users = users;
-
-            ViewBag.Amount = 10.55;
-            ViewBag.IsActive = true;
-
-            ViewBag.UserList = "Hello Jigar";
-            ViewBag.Dhruvi = "Hello Dhruvi";
-
-
-
-            ViewData["Customers"] = customers;
-
-            ViewData["Amount"] = 10.55;
-            ViewData["IsActive"] = true;
-
-            //Type castting
-
-            ViewBag.UserList = "Hello Jigar";
-            ViewBag.Dhruvi = "Hello Dhruvi";
-
-
-            ViewBag.Message = "Your application description page.";
-
-            return View(customers);
-        }
 
         public ActionResult Contact()
         {

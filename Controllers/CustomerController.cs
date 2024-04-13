@@ -1,4 +1,5 @@
-﻿using MyFirstMVCApplicaiton.Models;
+﻿using MyFirstMVCApplicaiton.AuthData;
+using MyFirstMVCApplicaiton.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,14 +8,24 @@ using System.Web.Mvc;
 
 namespace MyFirstMVCApplicaiton.Controllers
 {
+    //[Authorization("Admin")]
     public class CustomerController : Controller
     {
         // GET: Customer
-        public ActionResult Index()
+        public ActionResult Login()
         {
 
+            Session["Roles"] = "Admin"; // Will come from Database
 
-            var userid = Session["UserId"].ToString();
+            //User 
+            // 1 
+
+            // UserRole
+            //1,"Admin",1
+             //2,"HR",1
+
+
+            //var userid = Session["UserId"].ToString();
             // Client side >> 
 
             //Hidden FIeld
@@ -25,20 +36,20 @@ namespace MyFirstMVCApplicaiton.Controllers
             //URL?id=10&firstName=jigar&lastName=thakkar
             // VIewdata, ViewBag and tempData
 
-            var id = Request.QueryString["Id"].ToString();
-            var firstName = Request.QueryString["firstName"].ToString();
-            var lastName = Request.QueryString["lastName"].ToString();
+            //var id = Request.QueryString["Id"].ToString();
+            //var firstName = Request.QueryString["firstName"].ToString();
+            //var lastName = Request.QueryString["lastName"].ToString();
 
-            CustomerModel customerModel = new CustomerModel();
-            customerModel.CustomerID = 10;
-            customerModel.CustomerName = 125;
+           CustomerModel customerModel = new CustomerModel();
+            //customerModel.CustomerID = 10;
+            //customerModel.CustomerName = 125;
 
 
-            if (TempData.ContainsKey("Hello"))
-            {
-                var abc = TempData["Hello"].ToString();
-                TempData.Keep();
-            }
+            //if (TempData.ContainsKey("Hello"))
+            //{
+            //    var abc = TempData["Hello"].ToString();
+            //    TempData.Keep();
+            //}
 
            
 
